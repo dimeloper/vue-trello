@@ -1,6 +1,6 @@
 <template>
   <button type="button" class="button" :class="typeClasses">
-    <slot/>
+    <slot />
   </button>
 </template>
 
@@ -8,20 +8,20 @@
 export default {
   props: {
     type: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
-    typeClasses () {
+    typeClasses() {
       switch (this.type) {
         case 'danger':
-          return 'bg-red'
+          return 'bg-red';
         default:
-          return 'bg-teal'
+          return 'bg-teal';
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="css" scoped>

@@ -1,13 +1,9 @@
 <template>
-  <div class="board">
-
-  </div>
+  <div class="board"> </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="css">
@@ -17,6 +13,7 @@ export default {
 
 .column {
   @apply bg-grey-light p-2 mr-4 text-left shadow rounded;
+
   min-width: 350px;
 }
 
@@ -26,6 +23,7 @@ export default {
 
 .task-bg {
   @apply pin absolute;
-  background: rgba(0,0,0,0.5);
+
+  background: rgba(0, 0, 0, 0.5);
 }
 </style>
