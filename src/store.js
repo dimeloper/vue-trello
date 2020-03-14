@@ -29,6 +29,9 @@ export default new Vuex.Store({
         description: '',
       });
     },
+    UPDATE_TASK(state, {task, key, value}) {
+      task[key] = value;
+    },
   },
   plugins: [saveStatePlugin],
   state: {
