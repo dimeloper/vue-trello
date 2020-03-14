@@ -50,12 +50,6 @@
     "vue-cli-plugin-fontawesome": "^0.2.0",
     "vue-template-compiler": "^2.6.11"
   },
-  "lint-staged": {
-    "*.(ts)": [
-      "prettier --write",
-      "yarn lint:fix"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "cross-env PRE_COMMIT=true lint-staged"

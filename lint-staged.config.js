@@ -1,10 +1,5 @@
 module.exports = {
-  '*.js': [
-    'yarn lint:eslint',
-    'yarn lint:prettier',
-    'git add',
-    'yarn test:unit:file',
-  ],
+  '*.js': ['yarn lint:eslint', 'yarn lint:prettier', 'git add'],
   '{!(package)*.json,*.code-snippets,.*rc}': [
     'yarn lint:prettier --parser json',
     'git add',
@@ -15,7 +10,6 @@ module.exports = {
     'yarn lint:stylelint',
     'yarn lint:prettier',
     'git add',
-    'yarn test:unit:file',
   ],
   '*.scss': ['yarn lint:stylelint', 'yarn lint:prettier', 'git add'],
   '*.{jpeg,jpg,png,gif,svg}': ['imagemin-lint-staged', 'git add'],
