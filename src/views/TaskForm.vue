@@ -23,7 +23,7 @@ export default {
   computed: {
     ...mapGetters(['getTask']),
     task() {
-      return this.getTask(this.$route.params.id);
+      return this.getTask.bind(this.$route.params.id);
     },
   },
   methods: {
