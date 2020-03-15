@@ -5,7 +5,9 @@
         v-for="(column, $columnIndex) of board.columns"
         :key="$columnIndex"
         class="column"
-        @drop="moveTask($event, column.tasks)"
+        draggable
+        @dragstart.self="pickupColumn($event, $columnIndex)"
+        @drop="moveTaskOrColumn($event, column.tasks, $columnIndex)"
         @dragover.prevent
         @dragenter.prevent
       >
@@ -20,6 +22,11 @@
             draggable
             @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
             @click="goToTask(task.id)"
+            @drop.stop="
+              moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)
+            "
+            @dragover.prevent
+            @dragenter.prevent
           >
             <span class="w-full flex-no-shrink font-bold">
               {{ task.name }}
@@ -71,23 +78,51 @@ export default {
     goToTask(taskId) {
       this.$router.push({name: 'task', params: {id: taskId}});
     },
-    moveTask(event, toTasks) {
+    moveTaskOrColumn(event, toTasks, toColumnIndex, toTaskIndex) {
+      const type = event.dataTransfer.getData('type');
+      if (type === 'task') {
+        this.moveTask(
+          event,
+          toTasks,
+          toTaskIndex !== undefined ? toTaskIndex : toTasks.length
+        );
+      } else {
+        this.moveColumn(event, toColumnIndex);
+      }
+    },
+    moveColumn(event, toColumnIndex) {
+      const fromColumnIndex = event.dataTransfer.getData('from-column-index');
+      this.$store.commit('MOVE_COLUMN', {
+        fromColumnIndex,
+        toColumnIndex,
+      });
+    },
+    moveTask(event, toTasks, toTaskIndex) {
       const fromColumnIndex = event.dataTransfer.getData('from-column-index');
       const fromTasks = this.board.columns[fromColumnIndex].tasks;
-      const taskIndex = event.dataTransfer.getData('task-index');
+      const fromTaskIndex = event.dataTransfer.getData('from-task-index');
 
       this.$store.commit('MOVE_TASK', {
         fromTasks,
+        fromTaskIndex,
         toTasks,
-        taskIndex,
+        toTaskIndex,
       });
+    },
+    pickupColumn(event, fromColumnIndex) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.dropEffect = 'move';
+
+      event.dataTransfer.setData('from-column-index', fromColumnIndex);
+      event.dataTransfer.setData('type', 'column');
     },
     pickupTask(event, taskIndex, fromColumnIndex) {
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.dropEffect = 'move';
 
-      event.dataTransfer.setData('task-index', taskIndex);
+      event.dataTransfer.setData('from-task-index', taskIndex);
       event.dataTransfer.setData('from-column-index', fromColumnIndex);
+      event.dataTransfer.setData('type', 'task');
     },
   },
 };
